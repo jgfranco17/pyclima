@@ -1,6 +1,5 @@
 import requests
 import pandas as pd
-import seaborn as sns
 import datetime as dt
 import matplotlib.pyplot as plt
 
@@ -28,7 +27,7 @@ class Forecaster:
         self.__url = f'{self.__endpoint}&' + "&".join(f'{key}={value}' for key, value in self.__parameters.items())
 
     def __repr__(self) -> str:
-        return f'<Forecaster coordinates=({self.__latitude},{self.__longitude})>'
+        return f'<class Forecaster at {hex(id(self))}, coordinates=({self.__latitude},{self.__longitude})>'
 
     @property
     def url(self) -> str:
