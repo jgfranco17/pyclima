@@ -52,7 +52,3 @@ Once the work is ready for use, the instructions will be updated here.
 ## ✒️ Authors <a name="authors"></a>
 
 - [Chino Franco](https://github.com/jgfranco17)
-
-## :warning: Disclaimer <a name="disclaimer"></a>
-
-This program is currently limited to text-based data. We aim to allow future iterations to convert more diverse data formats.
