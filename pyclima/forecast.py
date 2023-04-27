@@ -22,28 +22,36 @@ class Forecaster(WeatherTool):
             "hourly": ",".join(hourly_metrics),
             "current_weather": "true"
         }
-        self.__url = f'{self.__endpoint}&' + "&".join([f'{key}={value}' for key, value in self.__parameters.items()])
+        self.__url = f'{self.endpoint}&' + "&".join([f'{key}={value}' for key, value in self.__parameters.items()])
 
     def __repr__(self) -> str:
         return f'<class Forecaster at {hex(id(self))}, coordinates=({self.__latitude},{self.__longitude})>'
     
     def get_historical(self, span:int=7) -> pd.DataFrame:
+        """
+        Retrieve dataframe of historical weather data.
+
+        Args:
+            span (int, optional): Number of historical days, defaults to 7
+
+        Raises:
+            ValueError: Raised if span is not an integer from 1 to 92
+
+        Returns:
+            pd.DataFrame: Compiled dataframe of weather data
+        """
         # Get API request response and decode JSON data
         try:
             if not 0 < span <= 92:
                 raise ValueError(f'{span} is not an integer from 1 to 92')
                 
-            weather_data = requests.get(f'{self.__url}&past_days={span}').json()
+            weather_data = self.retrieve_json(url=self.__url, parameters=f'&past_days={span}')
             raw_hourly_data = weather_data["hourly"]
             hourly_timestamps = [dt.datetime.strptime(t, "%Y-%m-%dT%H:%M") for t in raw_hourly_data["time"]]
             format_string = lambda s: s.replace("_2m", "")
             hourly_data = {format_string(key): series for key, series in raw_hourly_data.items() if key != "time"}
 
             return pd.DataFrame(hourly_data, index=hourly_timestamps)
-            
-        except requests.JSONDecodeError as jde:
-            print(f'Failed to decode JSON data: {jde}')
-            return None
         
         except ValueError as ve:
             print(f'Invalid value provided: {ve}')
