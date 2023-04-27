@@ -1,4 +1,3 @@
-import requests
 import pandas as pd
 import datetime as dt
 import matplotlib.pyplot as plt
@@ -27,6 +26,13 @@ class Forecaster(WeatherTool):
     def __repr__(self) -> str:
         return f'<class Forecaster at {hex(id(self))}, coordinates=({self.__latitude},{self.__longitude})>'
     
+    def get_current_weather(self) -> dict:
+        weather_data = self.retrieve_json(url=self.__url, metric="current_weather")
+        weather_data["is_day"] = bool(weather_data.get("is_day"))
+        weather_data["time"] = dt.datetime.strptime(weather_data.get("time"), "%Y-%m-%dT%H:%M")
+        
+        return weather_data
+
     def get_historical(self, span:int=7) -> pd.DataFrame:
         """
         Retrieve dataframe of historical weather data.
@@ -44,8 +50,7 @@ class Forecaster(WeatherTool):
             if not 0 < span <= 92:
                 raise ValueError(f'{span} is not an integer from 1 to 92')
                 
-            weather_data = self.retrieve_json(url=self.__url, parameters=f'&past_days={span}')
-            raw_hourly_data = weather_data["hourly"]
+            raw_hourly_data = self.retrieve_json(url=self.__url, parameters=f'&past_days={span}', metric="hourly")
             hourly_timestamps = [dt.datetime.strptime(t, "%Y-%m-%dT%H:%M") for t in raw_hourly_data["time"]]
             format_string = lambda s: s.replace("_2m", "")
             hourly_data = {format_string(key): series for key, series in raw_hourly_data.items() if key != "time"}
