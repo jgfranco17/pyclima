@@ -27,6 +27,12 @@ class Forecaster(WeatherTool):
         return f'<class Forecaster at {hex(id(self))}, coordinates=({self.__latitude},{self.__longitude})>'
     
     def get_current_weather(self) -> dict:
+        """
+        Retrieve current weather data from API.
+
+        Returns:
+            dict: Compiled weather data
+        """
         weather_data = self.retrieve_json(url=self.__url, metric="current_weather")
         weather_data["is_day"] = bool(weather_data.get("is_day"))
         weather_data["time"] = dt.datetime.strptime(weather_data.get("time"), "%Y-%m-%dT%H:%M")
