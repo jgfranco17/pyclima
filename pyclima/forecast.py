@@ -30,9 +30,5 @@ class Forecaster:
         return f'<class Forecaster at {hex(id(self))}, coordinates=({self.__latitude},{self.__longitude})>'
 
     @property
-    def url(self) -> str:
-        return self.__url
-
-    @property
     def coordinates(self) -> tuple:
         return self.__latitude, self.__longitude
