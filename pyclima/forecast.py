@@ -30,6 +30,9 @@ class Forecaster(WeatherTool):
     def get_historical(self, span:int=7) -> pd.DataFrame:
         # Get API request response and decode JSON data
         try:
+            if not 0 < span <= 92:
+                raise ValueError(f'{span} is not an integer from 1 to 92')
+                
             weather_data = requests.get(f'{self.__url}&past_days={span}').json()
             raw_hourly_data = weather_data["hourly"]
             hourly_timestamps = [dt.datetime.strptime(t, "%Y-%m-%dT%H:%M") for t in raw_hourly_data["time"]]
@@ -41,3 +44,6 @@ class Forecaster(WeatherTool):
         except requests.JSONDecodeError as jde:
             print(f'Failed to decode JSON data: {jde}')
             return None
+        
+        except ValueError as ve:
+            print(f'Invalid value provided: {ve}')
