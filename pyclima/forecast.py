@@ -18,7 +18,6 @@ class Forecaster(WeatherTool):
             "visibility",
             "cloudcover"
         ]
-        self.__endpoint = f'{self.BASE_URL}/forecast?latitude={latitude}&longitude={longitude}'
         self.__parameters = {
             "hourly": ",".join(hourly_metrics),
             "current_weather": "true"
