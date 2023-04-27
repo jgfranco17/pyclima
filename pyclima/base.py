@@ -19,7 +19,7 @@ class WeatherTool:
     def endpoint(self) -> str:
         return self.__endpoint
     
-    def retrieve_json(self, url:str, parameters:str) -> dict:
+    def retrieve_json(self, url:str, parameters:str=None, metric:str=None) -> dict:
         """
         Given a base URL and additional parameters, retrieve the
         weather data and parse the JSON into a dict.
@@ -35,8 +35,15 @@ class WeatherTool:
             dict: Parsed JSON data
         """
         try:
-            data = requests.get(url + parameters)
-            return data.json()
+            if metric is None:
+                raise ValueError("No valid metric provided.")
+            
+            params = parameters if parameters is not None else ""
+            data = dict(requests.get(url + params).json())
+            return data.get(metric, None)
+        
+        except ValueError as ve:
+            print(f'Error during JSON retrieval: {ve}')
 
         except requests.JSONDecodeError as jde:
             print(f'Failed to decode JSON data: {jde}')
