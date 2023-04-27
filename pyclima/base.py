@@ -1,17 +1,9 @@
-"""
-project_template base module.
+class WeatherTool:
+    BASE_URL = "https://api.open-meteo.com/v1"
+    
+    def __init__(self, latitude:float, longitude:float):
+        self.__latitude, self.__longitude = latitude, longitude
 
-This is the principal module of the project_template project.
-here you put your main classes and objects.
-
-Be creative! do whatever you want!
-
-If you want to replace this with a Flask application run:
-
-    $ make init
-
-and then choose `flask` as template.
-"""
-
-# example constant variable
-NAME = "project_template"
+    @property
+    def coordinates(self) -> tuple:
+        return self.__latitude, self.__longitude
