@@ -40,7 +40,6 @@ class Forecaster(WeatherTool):
         Returns:
             pd.DataFrame: Compiled dataframe of weather data
         """
-        # Get API request response and decode JSON data
         try:
             if not 0 < span <= 92:
                 raise ValueError(f'{span} is not an integer from 1 to 92')
