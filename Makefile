@@ -9,38 +9,41 @@ help:             ## Show the help.
 	@fgrep "##" Makefile | fgrep -v fgrep
 
 
+.PHONY: setup
+setup:  ## Execute installation.
+	@echo "Setting up project."
+	@pip3 install --upgrade setuptools
+	@echo "Installing testing dependencies."
+	@pip3 install -r requirements-test.txt
+	@echo "Setting up project requirements."
+	@pip3 install -r requirements.txt
+	@echo "Project setup complete!"
+
+
 .PHONY: show
 show:             ## Show the current environment.
 	@echo "Current environment:"
-	@if [ "$(USING_POETRY)" ]; then poetry env info && exit; fi
 	@echo "Running using $(ENV_PREFIX)"
 	@$(ENV_PREFIX)python -V
 	@$(ENV_PREFIX)python -m site
 
-.PHONY: install
-install:          ## Install the project in dev mode.
-	@if [ "$(USING_POETRY)" ]; then poetry install && exit; fi
-	@echo "Don't forget to run 'make virtualenv' if you got errors."
-	$(ENV_PREFIX)pip install -e .[test]
-
-.PHONY: fmt
-fmt:              ## Format code using black & isort.
-	$(ENV_PREFIX)isort project_template/
-	$(ENV_PREFIX)black -l 79 project_template/
+.PHONY: format
+format:              ## Format code using black & isort.
+	$(ENV_PREFIX)isort pyclima/
+	$(ENV_PREFIX)black -l 79 pyclima/
 	$(ENV_PREFIX)black -l 79 tests/
 
 .PHONY: lint
-lint:             ## Run pep8, black, mypy linters.
-	$(ENV_PREFIX)flake8 project_template/
-	$(ENV_PREFIX)black -l 79 --check project_template/
-	$(ENV_PREFIX)black -l 79 --check tests/
-	$(ENV_PREFIX)mypy --ignore-missing-imports project_template/
+lint:  ## Run pep8, black, mypy linters.
+	$(ENV_PREFIX)pylint pyclima/
+	$(ENV_PREFIX)flake8 pyclima/
+	$(ENV_PREFIX)black -l 80 --check pyclima/
+	$(ENV_PREFIX)mypy --ignore-missing-imports pyclima/
 
 .PHONY: test
-test: lint        ## Run tests and generate coverage report.
-	$(ENV_PREFIX)pytest -v --cov-config .coveragerc --cov=project_template -l --tb=short --maxfail=1 tests/
-	$(ENV_PREFIX)coverage xml
-	$(ENV_PREFIX)coverage html
+test:  ## Run PyTest unit tests.
+	@echo "Running unittest suite..."
+	@pytest -vv -rA
 
 .PHONY: watch
 watch:            ## Run tests on every change.
