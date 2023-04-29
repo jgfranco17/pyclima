@@ -58,7 +58,7 @@ class Forecaster(WeatherTool):
                 
             raw_hourly_data = self.retrieve_json(url=self.__url, parameters=f'&past_days={span}', metric="hourly")
             hourly_timestamps = [dt.datetime.strptime(t, "%Y-%m-%dT%H:%M") for t in raw_hourly_data["time"]]
-            format_string = lambda s: s.replace("_2m", "")
+            format_string = lambda s: s.replace("_2m", "").replace("_", "")
             hourly_data = {format_string(key): series for key, series in raw_hourly_data.items() if key != "time"}
 
             return pd.DataFrame(hourly_data, index=hourly_timestamps)
