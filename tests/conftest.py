@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock
-from pyclima.base import WeatherTool
+from pyclima.models.base import WeatherTool
 from pyclima.forecast import Forecaster
 
 
