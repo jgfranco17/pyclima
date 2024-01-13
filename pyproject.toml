@@ -1,3 +1,16 @@
+[tool.poetry]
+name = "pyclima"
+version = "0.0.0"
+description = ""
+authors = ["Chino Franco <chino.franco@gmail.com>"]
+readme = "README.md"
+packages = [
+    {include = "src", from = "./pyclima"},
+]
+
 [build-system]
-build-backend = "setuptools.build_meta"
-requires = ["setuptools", "wheel"]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+pyclima = "src.cli:main"
