@@ -8,9 +8,9 @@ repos:
     rev: v4.3.0
     hooks:
       - id: trailing-whitespace
-        exclude: .woven/
+        exclude: .github
       - id: end-of-file-fixer
-        exclude: .woven/
+        exclude: .github
       - id: check-yaml
       - id: check-added-large-files
       - id: check-shebang-scripts-are-executable
@@ -39,26 +39,6 @@ repos:
       - id: prettier
         stages: [commit]
         exclude: (Pipfile.lock|.woven/.*)
-
-  - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.31.0
-    hooks:
-      - id: markdownlint
-        args:
-          [
-            --config,
-            ".markdownlint.yaml",
-            "--ignore",
-            ".woven/release-notes.md",
-            "--ignore",
-            "stf-cli/tests/resources/step_catalog/references/*.md",
-          ]
-
-  - repo: https://github.com/adrienverge/yamllint
-    rev: v1.26.3
-    hooks:
-      - id: yamllint
-        args: [-s]
 
   - repo: https://github.com/jumanjihouse/pre-commit-hooks/
     rev: 2.1.5
@@ -104,56 +84,7 @@ repos:
           ]
         args:
           - "--max-line-length=100"
-
-  - repo: local
-    hooks:
-      - id: mypy-stf-core
-        name: mypy-stf-core
-        language: system
-        files: ^stf-core/
-        entry: bash -c 'cd stf-core && poetry run mypy --install-types --non-interactive .'
-        pass_filenames: false
-      - id: mypy-stf-cli
-        name: mypy-stf-cli
-        language: system
-        files: ^stf-cli/
-        entry: bash -c 'cd stf-cli && poetry run mypy --install-types --non-interactive .'
-        pass_filenames: false
-      - id: mypy-stf-service
-        name: mypy-stf-service
-        language: system
-        files: ^stf-service/
-        entry: bash -c 'cd stf-service && poetry run mypy --install-types --non-interactive .'
-        pass_filenames: false
-      - id: mypy-stf-test-utils
-        name: mypy-stf-test-utils
-        language: system
-        files: ^stf-test-utils/
-        entry: bash -c 'cd stf-test-utils && poetry run mypy --install-types --non-interactive .'
-        pass_filenames: false
-
-  # Poetry pre-commit (updated hook to run on all project toml ~ not working)
-  # https://github.com/python-poetry/poetry
-  - repo: local
-    hooks:
-      - id: poetry-check
-        name: poetry-check
-        description: run poetry check to validate config from script
-        entry: ./tools/poetry_check_and_lock
-        language: system
-        types: [file, toml]
-        pass_filenames: false
-
-  # Slackbot pre-commit (backticks cause failure in publish message)
-  - repo: local
-    hooks:
-      - id: check-backticks
-        name: Check for Backticks
-        language: system
-        files: ^docs/releases/.*\.md$
-        description: verify that the slackbot message has no backticks
-        entry: bash ./tools/check_backticks
-        types: [file]
+          - "--exclude=tests/*"
 
   - repo: https://github.com/PyCQA/docformatter.git
     rev: v1.4
@@ -171,10 +102,3 @@ repos:
     rev: v8.5.3
     hooks:
       - id: gitleaks
-
-  # Dockerfile
-  - repo: https://github.com/hadolint/hadolint
-    rev: v2.12.0
-    hooks:
-      - id: hadolint-docker
-        args: ["--ignore", "DL3008"]

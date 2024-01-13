@@ -1,0 +1,1 @@
+"""Pyclima CLI  init."""

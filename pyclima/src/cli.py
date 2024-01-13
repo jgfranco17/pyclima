@@ -1,14 +1,11 @@
-"""
-CLI base for TorchCam project.
-"""
+"""CLI base for TorchCam project."""
+import argparse
 import io
 import os
-import argparse
 
 
 def read(*paths, **kwargs) -> str:
-    """
-    Read the contents of a text file safely.
+    """Read the contents of a text file safely.
 
     Returns:
         str: The contents of the file
@@ -23,48 +20,48 @@ def read(*paths, **kwargs) -> str:
 
 
 def get_configs() -> argparse.Namespace:
-    """
-    Creates a parsed configuration namespace from the CLI arguments.
+    """Create a parsed configuration namespace from the CLI arguments.
 
     Returns:
         argparse.Namespace: Configuration namespace
     """
     parser = argparse.ArgumentParser(
         prog="torchcam",
-        description="Applying PyTorch MiDaS model on live webcam capture."
+        description="Applying PyTorch MiDaS model on live webcam capture.",
     )
     parser.add_argument(
         "mode",
         type=str,
-        help="Set to \'live\' for live depth-capture, or \'standard\' for single image capture."
+        help="Set to 'live' for live depth-capture, or 'standard' for single image capture.",
     )
     parser.add_argument(
-        "--camera", "-c",
+        "--camera",
+        "-c",
         type=int,
         default=0,
-        help="Webcam port to capture, default is 0"
+        help="Webcam port to capture, default is 0",
     )
     parser.add_argument(
-        "--window", "-w",
+        "--window",
+        "-w",
         type=float,
         default=1.0,
-        help="Display window scale, default is 1"
+        help="Display window scale, default is 1",
     )
     parser.add_argument(
-        "--style", "-s",
+        "--style",
+        "-s",
         type=str,
         default="hot",
-        help="Colormap styling, default is \'hot\'"
+        help="Colormap styling, default is 'hot'",
     )
     args = parser.parse_args()
     return args
 
 
 def cli():
+    """Execute commands.
+
+    `python -m pyclima` and `$ pyclima`.
     """
-    The main function executes on commands:
-    `python -m torchcam` and `$ torchcam`.
-    """
-    args = get_configs()
-    scanner = DepthCamera(camera=args.camera, mode=args.mode, scale=args.window, color=args.style)
-    scanner.run()
+    print("Running...")

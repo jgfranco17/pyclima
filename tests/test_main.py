@@ -1,7 +1,8 @@
-import pytest
-import datetime as dt
 from unittest.mock import Mock
-from pyclima.models.base import WeatherTool
+
+import pytest
+
+from pyclima.src.models.base import WeatherTool
 
 
 def test_get_current_weather(forecaster):

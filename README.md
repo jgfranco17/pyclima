@@ -9,11 +9,12 @@
 ---
 
 ## Table of Contents
-* [About](#about)
-* [Getting Started](#getting_started)
-* [Usage](#usage)
-* [Authors](#authors)
-* [Disclaimer](#disclaimer)
+
+- [About](#about)
+- [Getting Started](#getting_started)
+- [Usage](#usage)
+- [Authors](#authors)
+- [Disclaimer](#disclaimer)
 
 ## 🔎 About <a name="about"></a>
 

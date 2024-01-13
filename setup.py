@@ -1,16 +1,12 @@
-"""
-Python setup.py for pyclima package.
-"""
+"""Python setup.py for pyclima package."""
 import io
 import os
+
 from setuptools import find_packages, setup
 
 
 def read(*paths, **kwargs):
-    """
-    Read the contents of a text file safely.
-    """
-
+    """Read the contents of a text file safely."""
     content = ""
     with io.open(
         os.path.join(os.path.dirname(__file__), *paths),
@@ -20,9 +16,10 @@ def read(*paths, **kwargs):
     return content
 
 
-def read_requirements(path):
+def __read_requirements(path):
     return [
-        line.strip() for line in read(path).split("\n")
+        line.strip()
+        for line in read(path).split("\n")
         if not line.startswith(('"', "#", "-", "git+"))
     ]
 
@@ -36,6 +33,6 @@ setup(
     long_description_content_type="text/markdown",
     author="jgfranco17",
     packages=find_packages(exclude=["tests", ".github"]),
-    install_requires=read_requirements("requirements.txt"),
-    extras_require={"test": read_requirements("requirements-test.txt")},
+    install_requires=__read_requirements("requirements.txt"),
+    extras_require={"test": __read_requirements("requirements-test.txt")},
 )
